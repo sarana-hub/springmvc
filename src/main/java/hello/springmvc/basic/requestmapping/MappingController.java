@@ -13,7 +13,6 @@ public class MappingController {
      * 둘다 허용 /hello-basic, /hello-basic/
      * HTTP 메서드 모두 허용 GET, HEAD, POST, PUT, PATCH, DELETE
      */
-    //@RequestMapping("/hello-basic")
     @RequestMapping("/hello-basic")
     public String helloBasic() {
         log.info("helloBasic");
@@ -31,7 +30,7 @@ public class MappingController {
     }
 
     /**
-     * 편리한 축약 애노테이션 (코드보기)
+     * HTTP 메서드 매핑 축약 애노테이션
      * @GetMapping
      * @PostMapping
      * @PutMapping
@@ -45,7 +44,7 @@ public class MappingController {
     }
 
     /**
-     * PathVariable 사용
+     * PathVariable(경로 변수) 사용
      * 변수명이 같으면 생략 가능
      * @PathVariable("userId") String userId -> @PathVariable userId
      */
@@ -56,7 +55,7 @@ public class MappingController {
     }
 
     /**
-     * PathVariable 사용 다중
+     * PathVariable 사용 -다중
      */
     @GetMapping("/mapping/users/{userId}/orders/{orderId}")
     public String mappingPath(@PathVariable String userId, @PathVariable Long
@@ -66,7 +65,7 @@ public class MappingController {
     }
 
     /**
-     * 파라미터로 추가 매핑
+     * 특정 파라미터 조건 매핑
      * params="mode",
      * params="!mode"
      * params="mode=debug"
@@ -81,7 +80,7 @@ public class MappingController {
     }
 
     /**
-     * 특정 헤더로 추가 매핑
+     * 특정 헤더 조건 매핑
      * headers="mode",
      * headers="!mode"
      * headers="mode=debug"
@@ -95,11 +94,14 @@ public class MappingController {
     }
 
     /**
+     * 미디어 타입 조건 매핑 - HTTP 요청 Content-Type, consume
      * Content-Type 헤더 기반 추가 매핑 Media Type
      * consumes="application/json"
      * consumes="!application/json"
      * consumes="application/*"
+     * consumes = {"text/plain", "application/*"}
      * consumes="*\/*"
+     * consumes = MediaType.TEXT_PLAIN_VALUE
      * MediaType.APPLICATION_JSON_VALUE
      */
     @PostMapping(value = "/mapping-consume", consumes = "application/json")
@@ -109,6 +111,7 @@ public class MappingController {
     }
 
     /**
+     * 미디어 타입 조건 매핑 - HTTP 요청 Accept, produce
      * Accept 헤더 기반 Media Type
      * produces = "text/html"
      * produces = "!text/html"
