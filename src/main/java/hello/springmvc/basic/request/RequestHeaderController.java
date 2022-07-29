@@ -21,7 +21,10 @@ public class RequestHeaderController {
                           HttpMethod httpMethod,    //HTTP 메서드를 조회
                           Locale locale,            // Locale 정보를 조회
                           @RequestHeader MultiValueMap<String, String> headerMap,   //모든 HTTP 헤더를 MultiValueMap 형식으로 조회
-                          //HTTP header, HTTP 쿼리 파라미터와 같이 "하나의 키"에 "여러 값"을 받을 때 사용 (ex keyA=value1&keyA=value2)
+                          /**MultiValueMap
+                                HTTP header, HTTP 쿼리 파라미터와 같이 "하나의 키"에 "여러 값"을 받을 때 사용
+                               (ex keyA=value1&keyA=value2)
+                               */
                           @RequestHeader("host") String host,   //특정 HTTP 헤더를 조회
                           @CookieValue(value = "myCookie", required = false) String cookie  //특정 쿠키를 조회
     ) {
