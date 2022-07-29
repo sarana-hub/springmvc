@@ -22,8 +22,7 @@ public class RequestBodyJsonController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/request-body-json-v1")
-    public void requestBodyJsonV1(HttpServletRequest request,
-                                  HttpServletResponse response) throws IOException {
+    public void requestBodyJsonV1(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ServletInputStream inputStream = request.getInputStream();
         String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
 
@@ -36,7 +35,10 @@ public class RequestBodyJsonController {
 
 
     /**
-     * @RequestBody HttpMessageConverter 사용 -> StringHttpMessageConverter 적용
+     * @RequestBody 문자 변환
+     *
+     * @RequestBody
+     * HttpMessageConverter 사용 -> StringHttpMessageConverter 적용
      * @ResponseBody - 모든 메서드에 @ResponseBody 적용
      * - 메시지 바디 정보 직접 반환(view 조회X)
      * - HttpMessageConverter 사용 -> StringHttpMessageConverter 적용
@@ -45,6 +47,7 @@ public class RequestBodyJsonController {
     @PostMapping("/request-body-json-v2")
     public String requestBodyJsonV2(@RequestBody String messageBody) throws IOException {
         HelloData data = objectMapper.readValue(messageBody, HelloData.class);
+        //문자로된 JSON데이터를 objectMapper를 사용해 자바 객체로 변환 ->v3에선 HttpMessageConverter가 해줌
         log.info("username={}, age={}", data.getUsername(), data.getAge());
 
         return "ok";
@@ -52,14 +55,16 @@ public class RequestBodyJsonController {
 
 
     /**
-     * @RequestBody 생략 불가능(@ModelAttribute 가 적용되어 버림)
-     * HttpMessageConverter 사용 -> MappingJackson2HttpMessageConverter (contenttype: application/json)
+     *  @RequestBody 객체 변환
+     *
+     * @RequestBody 생략 불가능!
+     * (@ModelAttribute가 적용되어 버림-> 생략하면 HTTP 메시지 바디가 아니라 요청 파라미터를 처리하게 된다)
+     * HttpMessageConverter 사용 -> MappingJackson2HttpMessageConverter (content-type: application/json)
      */
     @ResponseBody
     @PostMapping("/request-body-json-v3")
-    public String requestBodyJsonV3(@RequestBody HelloData data) {
+    public String requestBodyJsonV3(@RequestBody HelloData data) {  //@RequestBody에 직접 만든 객체를 지정
         log.info("username={}, age={}", data.getUsername(), data.getAge());
-
         return "ok";
     }
 
@@ -75,18 +80,16 @@ public class RequestBodyJsonController {
 
     /**
      * @RequestBody 생략 불가능(@ModelAttribute 가 적용되어 버림)
-     * HttpMessageConverter 사용 -> MappingJackson2HttpMessageConverter (contenttype: application/json)
+     * HttpMessageConverter 사용 -> MappingJackson2HttpMessageConverter (content-type: application/json)
      *
      * @ResponseBody 적용
      * - 메시지 바디 정보 직접 반환(view 조회X)
-     * - HttpMessageConverter 사용 -> MappingJackson2HttpMessageConverter 적용
-    (Accept: application/json)
+     * - HttpMessageConverter 사용 -> MappingJackson2HttpMessageConverter 적용 (Accept: application/json)
      */
     @ResponseBody
     @PostMapping("/request-body-json-v5")
     public HelloData requestBodyJsonV5(@RequestBody HelloData data) {
         log.info("username={}, age={}", data.getUsername(), data.getAge());
-
         return data;
     }
 
