@@ -2,6 +2,7 @@ package hello.springmvc.basic.requestmapping;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -10,10 +11,9 @@ public class MappingController {
     private Logger log = LoggerFactory.getLogger(getClass());
     /**
      * 기본 요청
-     * 둘다 허용 /hello-basic, /hello-basic/
-     * HTTP 메서드 모두 허용 GET, HEAD, POST, PUT, PATCH, DELETE
+     * HTTP 메서드 지정안하면, 모두 허용 (GET, HEAD, POST, PUT, PATCH, DELETE)
      */
-    @RequestMapping("/hello-basic")
+    @RequestMapping("/hello-basic")     // "/hello-basic", "/hello-basic/" 둘다 허용
     public String helloBasic() {
         log.info("helloBasic");
         return "ok";
@@ -21,7 +21,6 @@ public class MappingController {
 
     /**
      * method 특정 HTTP 메서드 요청만 허용
-     * GET, HEAD, POST, PUT, PATCH, DELETE
      */
     @RequestMapping(value = "/mapping-get-v1", method = RequestMethod.GET)
     public String mappingGetV1() {
@@ -43,14 +42,19 @@ public class MappingController {
         return "ok";
     }
 
+
     /**
      * PathVariable(경로 변수) 사용
-     * 변수명이 같으면 생략 가능
+     * 변수명(@PathVariable의 이름과 파라미터 이름)이 같으면 생략 가능
      * @PathVariable("userId") String userId -> @PathVariable userId
      */
-    @GetMapping("/mapping/{userId}")
-    public String mappingPath(@PathVariable("userId") String data) {
+    @GetMapping("/mapping/{userId}")    //템플릿화 //리소스 경로에 식별자(파라미터)를 넣음
+    /*public String mappingPath(@PathVariable("userId") String data) {
         log.info("mappingPath userId={}", data);
+        return "ok";
+    }*/
+    public String mappingPath(@PathVariable String userId) {
+        log.info("mappingPath userId={}", userId);
         return "ok";
     }
 
@@ -58,11 +62,11 @@ public class MappingController {
      * PathVariable 사용 -다중
      */
     @GetMapping("/mapping/users/{userId}/orders/{orderId}")
-    public String mappingPath(@PathVariable String userId, @PathVariable Long
-            orderId) {
+    public String mappingPath(@PathVariable String userId, @PathVariable Long orderId) {
         log.info("mappingPath userId={}, orderId={}", userId, orderId);
         return "ok";
     }
+
 
     /**
      * 특정 파라미터 조건 매핑
@@ -94,24 +98,21 @@ public class MappingController {
     }
 
     /**
-     * 미디어 타입 조건 매핑 - HTTP 요청 Content-Type, consume
+     * 미디어 타입 조건 매핑 - HTTP 요청 Content-Type
      * Content-Type 헤더 기반 추가 매핑 Media Type
      * consumes="application/json"
      * consumes="!application/json"
      * consumes="application/*"
-     * consumes = {"text/plain", "application/*"}
      * consumes="*\/*"
-     * consumes = MediaType.TEXT_PLAIN_VALUE
-     * MediaType.APPLICATION_JSON_VALUE
      */
     @PostMapping(value = "/mapping-consume", consumes = "application/json")
+    //@PostMapping(value = "/mapping-consume", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String mappingConsumes() {
         log.info("mappingConsumes");
         return "ok";
     }
-
     /**
-     * 미디어 타입 조건 매핑 - HTTP 요청 Accept, produce
+     * 미디어 타입 조건 매핑 - HTTP 요청 Accept
      * Accept 헤더 기반 Media Type
      * produces = "text/html"
      * produces = "!text/html"
@@ -119,6 +120,7 @@ public class MappingController {
      * produces = "*\/*"
      */
     @PostMapping(value = "/mapping-produce", produces = "text/html")
+    //@PostMapping(value = "/mapping-produce", produces = MediaType.TEXT_HTML_VALUE)
     public String mappingProduces() {
         log.info("mappingProduces");
         return "ok";
