@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @Slf4j
-@RestController     //반환 값을 HTTP 메시지 바디에 바로 입력 (따라서 실행 결과로 ok 메세지)
+@RestController     //HTTP 메시지 바디에 바로 입력
 public class LogTestController {
 
     //private final Logger log= LoggerFactory.getLogger(getClass());
@@ -19,16 +19,16 @@ public class LogTestController {
         String name = "Spring";
 
         //로그 레벨: TRACE > DEBUG > INFO > WARN > ERROR
-        // application.properties에서 로그 레벨 설정
         log.trace("trace log={}", name);
         log.debug("debug log={}", name);
         log.info(" info log={}", name);
         log.warn(" warn log={}", name);
         log.error("error log={}", name);
 
-        //log.debug("String concat log=" + name);   이런 방식으로 사용하면 안됨!
-        //로그 출력 레벨을 info로 설정해도(로그를 사용하지 않아도) 더하기 연산이 발생! (의미없는 연산)
+        //log.debug("debug my log=" + name);   이런 방식으로 사용하면 안됨!!
+        //로그를 사용하지 않아도(로그 출력 레벨이 info여도) 더하기 연산(의미없는 연산)이 발생
 
         return "ok";
     }
+
 }
