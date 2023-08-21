@@ -16,8 +16,9 @@ import java.util.Map;
 @Slf4j
 @Controller
 public class RequestParamController {
+
     /**
-     * 반환 타입이 없으면서 이렇게 응답에 값을 직접 집어넣으면, view 조회X
+     * 반환 타입이 없으면서 이렇게 응답에 값을 직접 집어넣으면, view조회X
      */
     @RequestMapping("/request-param-v1")
     public void requestParamV1(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -27,6 +28,7 @@ public class RequestParamController {
 
         response.getWriter().write("ok");
     }
+
 
 
     /**
