@@ -97,15 +97,12 @@ public class RequestParamController {
         return "ok";
     }
 
-    /**
-     * @ModelAttribute 생략 가능!
-     * String, int 같은 단순 타입 = @RequestParam 사용
-     * 그외 나머지(argument resolver로 지정해둔 타입 외) = @ModelAttribute 사용
-     */
+
     @ResponseBody
     @RequestMapping("/model-attribute-v2")
     public String modelAttributeV2(HelloData helloData) {
         log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
         return "ok";
     }
+
 }
