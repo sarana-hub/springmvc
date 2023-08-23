@@ -19,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @Controller
 public class RequestBodyJsonController {
+
+    //문자로 된 JSON 데이터를 objectMapper (Jackson 라이브러리)를 사용해서 자바 객체로 변환
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/request-body-json-v1")
@@ -35,19 +37,14 @@ public class RequestBodyJsonController {
 
 
     /**
-     * @RequestBody 문자 변환
-     *
      * @RequestBody
      * HttpMessageConverter 사용 -> StringHttpMessageConverter 적용
-     * @ResponseBody - 모든 메서드에 @ResponseBody 적용
-     * - 메시지 바디 정보 직접 반환(view 조회X)
-     * - HttpMessageConverter 사용 -> StringHttpMessageConverter 적용
      */
     @ResponseBody
     @PostMapping("/request-body-json-v2")
     public String requestBodyJsonV2(@RequestBody String messageBody) throws IOException {
         HelloData data = objectMapper.readValue(messageBody, HelloData.class);
-        //문자로된 JSON데이터를 objectMapper를 사용해 자바 객체로 변환 ->v3에선 HttpMessageConverter가 해줌
+        //문자로된 JSON데이터(messageBody)를 objectMapper를 사용해 자바 객체로 변환 ->v3에선 HttpMessageConverter가 대신 해줌
         log.info("username={}, age={}", data.getUsername(), data.getAge());
 
         return "ok";
